@@ -9,7 +9,11 @@
   opacity: 0.3;
 }
 
-.circle-red--active {
+.circle-red--selected {
+  width: 110px;
+  height: 110px;
+}
+.circle-red--active{
   opacity: 1;
 }
 
@@ -18,6 +22,10 @@
   opacity: 0.3;
 }
 
+.circle-green--selected {
+  width:  110px;
+  height: 110px;
+}
 .circle-green--active {
   opacity: 1;
 }
@@ -27,6 +35,10 @@
   opacity: 0.3;
 }
 
+.circle-orange--selected {
+  width: 110px;
+  height: 110px;
+}
 .circle-orange--active {
   opacity: 1;
 }
