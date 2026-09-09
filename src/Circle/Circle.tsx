@@ -1,4 +1,6 @@
+import { forwardRef } from 'react';
 import './Circle.css';
+
 
 interface Props {
   color: string
@@ -11,13 +13,21 @@ interface Props {
 //   return <div className={circleInfo} />;
 // }
 
-export function Circle({ color, active = false, enterActive = false }: Props) {
-  const classes = [
-    'circle',
-    `circle-${color}`,
-    active ? `circle-${color}--selected` : '',
-    enterActive ? `circle-${color}--active` : ''
-  ].filter(Boolean).join(' ');
-  
-  return <div className={classes} />;
-}
+export const Circle = forwardRef<HTMLDivElement, Props>(
+    ({ color, active = false, enterActive = false }, ref) => {
+        const classes = [
+            'circle',
+            `circle-${color}`,
+            active ? `circle-${color}--selected` : '',
+            enterActive ? `circle-${color}--active` : ''
+        ].filter(Boolean).join(' ');
+
+        return (
+            <div
+                ref={ref}
+                tabIndex={0}
+                className={classes}
+            />
+        );
+    }
+)

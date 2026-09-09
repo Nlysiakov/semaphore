@@ -3,107 +3,102 @@ import './App.css';
 import { Circle } from './Circle/Circle';
 
 
-
 function App() {
-  const [circleState, setCircleState] = useState({
-    red: {
-      status: true,
-      active: true
-    },
-    orange: {
-      status: false,
-      active: false
-    },
-    green: {
-      status: false,
-      active: false
-    }
-  });
 
-  
-  const changeCircle = () => {
-    if (circleState.red.status) {
-      setCircleState({
-        red: { status: false, active: false },
-        orange: { status: true, active: false },
-        green: { status: false, active: false }
-      });
-    } else if (circleState.orange.status) {
-      setCircleState({
-        red: { status: false, active: false },
-        orange: { status: false, active: false },
-        green: { status: true, active: false }
-      });
-    } else if (circleState.green.status) {
-      setCircleState({
-        red: { status: true, active: false },
-        orange: { status: false, active: false },
-        green: { status: false, active: false }
-      });
-    }
-  };
+  const refGreen=useRef<HTMLDivElement | null>(null)
+  const refOrange=useRef<HTMLDivElement | null>(null)
+  const refRed=useRef<HTMLDivElement | null>(null)
 
-  
-  const activateCircle = () => {
-    setCircleState(prev => {
-      if (prev.red.status) {
-        return {
-          ...prev,
-          red: { ...prev.red, active: true }
-        };
-      } else if (prev.orange.status) {
-        return {
-          ...prev,
-          orange: { ...prev.orange, active: true }
-        };
-      } else if (prev.green.status) {
-        return {
-          ...prev,
-          green: { ...prev.green, active: true }
-        };
-      }
-      return prev;
-    });
-  };
 
-  
+  const [activeColor, setActiveColor]=useState<"red" | "orange" | "green">("red")
+
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code === "Tab") {
-        event.preventDefault();
-        changeCircle();
-      }
-      if (event.code === "Enter") {
-        event.preventDefault();
-        activateCircle(); 
-      }
-    };
+    if (refRed.current) {
+        refRed.current.style.width = '110px';
+        refRed.current.style.height = '110px';
+        refRed.current.focus();
+    }
+}, []);
+
+  
+  const circleState=(ref: React.RefObject<HTMLDivElement>, value:number)=>{
+    if(ref.current){
+      ref.current.style.width=`${value}px`
+      ref.current.style.height=`${value}px`
+    }
+  }
+  
+  // const circleFocus=(ref: React.RefObject<HTMLDivElement>)=>{
+  //   if(ref.current){
+  //     ref.current.focus()
+  //   }
+  // }
+  
+  const handleSwapCircle=()=>{
     
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [circleState]);
+    circleState(refRed, 100)
+    circleState(refOrange, 100)
+    circleState(refGreen, 100)
+
+    let nextColor: "red" | "orange" | "green"="red"
+    
+    if(activeColor === "red"){
+      circleState(refRed, 110)
+      nextColor="orange"
+    }else if(activeColor === "orange"){
+      circleState(refOrange, 110)
+      nextColor="green"
+    }else{
+      circleState(refGreen, 110)
+      nextColor="red"
+    }
+    setActiveColor(nextColor)
+    }
+    
+    
+    
+    const handleKeySwap=(e:KeyboardEvent)=>{
+      if(e.key==="tab" || e.key==="Tab"){
+        e.preventDefault()
+        handleSwapCircle()
+      }
+       if (e.key === "enter" || e.key === "Enter") {
+        e.preventDefault()
+    }
+    }
+    
+    
+    useEffect(() => {
+      window.addEventListener('keydown', handleKeySwap)
+      return () => window.removeEventListener('keydown', handleKeySwap)
+  }, [handleKeySwap])
+
+    
 
   return (
     <div className="semaphore-container">
       <div className="semaphore-item">
-        <Circle 
+        <Circle
+          ref={refRed}
           color="red" 
-          active={circleState.red.status}
-          enterActive={circleState.red.active}
+          active={activeColor==="red"}
+          enterActive={activeColor==="red"}
         />
       </div>
       <div className="semaphore-item">
         <Circle 
-          color="orange" 
-          active={circleState.orange.status}
-          enterActive={circleState.orange.active}
+          ref={refOrange}
+          color="orange"
+          active={activeColor==="orange"}
+          enterActive={activeColor==="orange"} 
         />
       </div>
       <div className="semaphore-item">
         <Circle 
-          color="green" 
-          active={circleState.green.status}
-          enterActive={circleState.green.active}
+          ref={refGreen}
+          color="green"
+          active={activeColor==="green"}
+          enterActive={activeColor==="green"}
         />
       </div>
     </div>
