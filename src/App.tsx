@@ -11,58 +11,19 @@ function App() {
 
 
   const [activeColor, setActiveColor]=useState<"red" | "orange" | "green">("red")
+  const [enterState, setEnterState]=useState(false)
 
-  useEffect(() => {
-    if (refRed.current) {
-        refRed.current.style.width = '110px';
-        refRed.current.style.height = '110px';
-        refRed.current.focus();
-    }
-}, []);
 
-  
-  const circleState=(ref: React.RefObject<HTMLDivElement>, value:number)=>{
-    if(ref.current){
-      ref.current.style.width=`${value}px`
-      ref.current.style.height=`${value}px`
-    }
+  const handleCircleFocus=(color:"red" | "orange" | "green")=>{
+    setActiveColor(color)
   }
-  
-  // const circleFocus=(ref: React.RefObject<HTMLDivElement>)=>{
-  //   if(ref.current){
-  //     ref.current.focus()
-  //   }
-  // }
-  
-  const handleSwapCircle=()=>{
-    
-    circleState(refRed, 100)
-    circleState(refOrange, 100)
-    circleState(refGreen, 100)
-
-    let nextColor: "red" | "orange" | "green"="red"
-    
-    if(activeColor === "red"){
-      circleState(refRed, 110)
-      nextColor="orange"
-    }else if(activeColor === "orange"){
-      circleState(refOrange, 110)
-      nextColor="green"
-    }else{
-      circleState(refGreen, 110)
-      nextColor="red"
-    }
-    setActiveColor(nextColor)
-    }
-    
-    
     
     const handleKeySwap=(e:KeyboardEvent)=>{
       if(e.key==="tab" || e.key==="Tab"){
-        e.preventDefault()
-        handleSwapCircle()
+        setEnterState(false)
       }
        if (e.key === "enter" || e.key === "Enter") {
+        setEnterState(true)
         e.preventDefault()
     }
     }
@@ -73,6 +34,12 @@ function App() {
       return () => window.removeEventListener('keydown', handleKeySwap)
   }, [handleKeySwap])
 
+  useEffect(()=>{
+    if(refRed.current){
+      refRed.current.focus()
+    }
+  },[])
+
     
 
   return (
@@ -82,7 +49,8 @@ function App() {
           ref={refRed}
           color="red" 
           active={activeColor==="red"}
-          enterActive={activeColor==="red"}
+          enterActive={enterState && activeColor==="red"}
+          onFocus={()=>handleCircleFocus("red")}
         />
       </div>
       <div className="semaphore-item">
@@ -90,7 +58,8 @@ function App() {
           ref={refOrange}
           color="orange"
           active={activeColor==="orange"}
-          enterActive={activeColor==="orange"} 
+          enterActive={enterState && activeColor==="orange"} 
+          onFocus={()=>{handleCircleFocus("orange")}}
         />
       </div>
       <div className="semaphore-item">
@@ -98,7 +67,8 @@ function App() {
           ref={refGreen}
           color="green"
           active={activeColor==="green"}
-          enterActive={activeColor==="green"}
+          enterActive={enterState && activeColor==="green"}
+          onFocus={()=>handleCircleFocus("green")}
         />
       </div>
     </div>

@@ -6,6 +6,7 @@ interface Props {
   color: string
   active?: boolean
   enterActive?: boolean
+  onFocus?: ()=>void
 }
 
 // export function Circle({ color, active, enterActive }: Props) {
@@ -14,7 +15,7 @@ interface Props {
 // }
 
 export const Circle = forwardRef<HTMLDivElement, Props>(
-    ({ color, active = false, enterActive = false }, ref) => {
+    ({ color, active = false, enterActive = false, onFocus }, ref) => {
         const classes = [
             'circle',
             `circle-${color}`,
@@ -27,6 +28,7 @@ export const Circle = forwardRef<HTMLDivElement, Props>(
                 ref={ref}
                 tabIndex={0}
                 className={classes}
+                onFocus={onFocus}
             />
         );
     }
