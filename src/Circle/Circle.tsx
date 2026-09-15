@@ -1,35 +1,39 @@
-import { forwardRef } from 'react';
+import classNames from 'classnames';
+import { useState } from 'react';
 import './Circle.css';
+import { KeyboardEvent, MouseEvent } from 'react';
 
 
 interface Props {
   color: string
-  active?: boolean
-  enterActive?: boolean
+//   isActive?: boolean
   onFocus?: ()=>void
 }
 
-// export function Circle({ color, active, enterActive }: Props) {
-//   const circleInfo = `circle circle-${color} ${active ? 'selected' : ''} ${enterActive ? 'active' : ''}`;
-//   return <div className={circleInfo} />;
-// }
+export const Circle = ({ color, onFocus }:Props) => {
+    const [isActive, setIsActive]=useState(false)
 
-export const Circle = forwardRef<HTMLDivElement, Props>(
-    ({ color, active = false, enterActive = false, onFocus }, ref) => {
-        const classes = [
-            'circle',
-            `circle-${color}`,
-            active ? `circle-${color}--selected` : '',
-            enterActive ? `circle-${color}--active` : ''
-        ].filter(Boolean).join(' ');
+    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            setIsActive(prev => !prev);
+        }
+    };
+    
+    const handleClick = (_e: MouseEvent<HTMLDivElement>) => {
+        setIsActive(prev=> !prev)
+    };
 
         return (
             <div
-                ref={ref}
                 tabIndex={0}
-                className={classes}
+                className={classNames(
+                    "circle",
+                    `circle-${color}`,
+                    {[`circle-${color}--active`]: isActive}
+                )}
                 onFocus={onFocus}
+                onKeyDown={handleKeyDown}
+                onClick={handleClick}
             />
         );
     }
-)

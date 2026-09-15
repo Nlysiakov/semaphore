@@ -5,40 +5,11 @@ import { Circle } from './Circle/Circle';
 
 function App() {
 
-  const refGreen=useRef<HTMLDivElement | null>(null)
-  const refOrange=useRef<HTMLDivElement | null>(null)
-  const refRed=useRef<HTMLDivElement | null>(null)
+  // const ref=useRef<HTMLDivElement | null>(null)
+  const [activeColor, setActiveColor]=useState<colors>("red")
 
 
-  const [activeColor, setActiveColor]=useState<"red" | "orange" | "green">("red")
-  const [enterState, setEnterState]=useState(false)
-
-
-  const handleCircleFocus=(color:"red" | "orange" | "green")=>{
-    setActiveColor(color)
-  }
-    
-    const handleKeySwap=(e:KeyboardEvent)=>{
-      if(e.key==="tab" || e.key==="Tab"){
-        setEnterState(false)
-      }
-       if (e.key === "enter" || e.key === "Enter") {
-        setEnterState(true)
-        e.preventDefault()
-    }
-    }
-    
-    
-    useEffect(() => {
-      window.addEventListener('keydown', handleKeySwap)
-      return () => window.removeEventListener('keydown', handleKeySwap)
-  }, [handleKeySwap])
-
-  useEffect(()=>{
-    if(refRed.current){
-      refRed.current.focus()
-    }
-  },[])
+  type colors = "red" | "orange" | "green"
 
     
 
@@ -46,29 +17,26 @@ function App() {
     <div className="semaphore-container">
       <div className="semaphore-item">
         <Circle
-          ref={refRed}
+          // ref={ref}
           color="red" 
-          active={activeColor==="red"}
-          enterActive={enterState && activeColor==="red"}
-          onFocus={()=>handleCircleFocus("red")}
+          // active={activeColor==="red"}
+          onFocus={()=>setActiveColor("red")}
         />
       </div>
       <div className="semaphore-item">
         <Circle 
-          ref={refOrange}
+          // ref={ref}
           color="orange"
-          active={activeColor==="orange"}
-          enterActive={enterState && activeColor==="orange"} 
-          onFocus={()=>{handleCircleFocus("orange")}}
+          // active={activeColor==="orange"}
+         onFocus={()=>setActiveColor("orange")}
         />
       </div>
       <div className="semaphore-item">
         <Circle 
-          ref={refGreen}
+          // ref={ref}
           color="green"
-          active={activeColor==="green"}
-          enterActive={enterState && activeColor==="green"}
-          onFocus={()=>handleCircleFocus("green")}
+          // active={activeColor==="green"}
+          onFocus={()=>setActiveColor("green")}
         />
       </div>
     </div>
