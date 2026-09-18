@@ -1,42 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState} from 'react';
 import './App.css';
 import { Circle } from './Circle/Circle';
 
 
 function App() {
 
-  // const ref=useRef<HTMLDivElement | null>(null)
+  type colors = "red" | "orange" | "green"
   const [activeColor, setActiveColor]=useState<colors>("red")
 
-
-  type colors = "red" | "orange" | "green"
-
-    
 
   return (
     <div className="semaphore-container">
       <div className="semaphore-item">
         <Circle
-          // ref={ref}
           color="red" 
-          // active={activeColor==="red"}
-          onFocus={()=>setActiveColor("red")}
+          isActive={activeColor==="red"}
+          onFocus={setActiveColor}
         />
       </div>
       <div className="semaphore-item">
         <Circle 
-          // ref={ref}
           color="orange"
-          // active={activeColor==="orange"}
-         onFocus={()=>setActiveColor("orange")}
+          isActive={activeColor==="orange"}
+          onFocus={setActiveColor}
         />
       </div>
       <div className="semaphore-item">
         <Circle 
-          // ref={ref}
           color="green"
-          // active={activeColor==="green"}
-          onFocus={()=>setActiveColor("green")}
+          isActive={activeColor==="green"}
+          onFocus={ setActiveColor}
         />
       </div>
     </div>

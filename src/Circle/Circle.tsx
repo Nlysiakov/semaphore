@@ -1,26 +1,25 @@
 import classNames from 'classnames';
-import { useState } from 'react';
 import './Circle.css';
 import { KeyboardEvent, MouseEvent } from 'react';
 
+type Tcolor="red" | "orange" | "green"
 
 interface Props {
-  color: string
-//   isActive?: boolean
-  onFocus?: ()=>void
+  color: Tcolor
+  isActive: boolean
+  onFocus:(color:Tcolor)=>void
 }
 
-export const Circle = ({ color, onFocus }:Props) => {
-    const [isActive, setIsActive]=useState(false)
+export const Circle = ({ color, isActive ,onFocus }:Props) => {
 
     const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
-            setIsActive(prev => !prev);
+            onFocus(color);
         }
     };
     
     const handleClick = (_e: MouseEvent<HTMLDivElement>) => {
-        setIsActive(prev=> !prev)
+            onFocus(color)
     };
 
         return (
@@ -31,7 +30,6 @@ export const Circle = ({ color, onFocus }:Props) => {
                     `circle-${color}`,
                     {[`circle-${color}--active`]: isActive}
                 )}
-                onFocus={onFocus}
                 onKeyDown={handleKeyDown}
                 onClick={handleClick}
             />
