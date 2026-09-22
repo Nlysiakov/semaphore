@@ -1,16 +1,25 @@
 import classNames from 'classnames';
+import { useRef } from 'react';
 import './Circle.css';
-import { KeyboardEvent, MouseEvent } from 'react';
+import { KeyboardEvent, MouseEvent, useEffect } from 'react';
 import { Tcolor } from '../models/types';
 
 interface Props {
   color: Tcolor
   isActive: boolean
   onSelect:(color:Tcolor)=>void
-  ref?: React.Ref<HTMLDivElement>
 }
 
-export const Circle = ({ color, isActive, onSelect, ref }:Props) => {
+export const Circle = ({ color, isActive, onSelect }:Props) => {
+
+    const ref=useRef<HTMLDivElement>(null)
+
+
+    useEffect(()=>{
+        if(isActive){
+            ref.current?.focus()
+        }
+    },[isActive])
 
     const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
